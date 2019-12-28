@@ -8,13 +8,17 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:component-scan base-package="local.test.springmvc.controller"/>
+
+    <!-- jsp for view -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <!-- MVC的对request和reponse的处理 -->
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
+            <!-- 将结果直接返回，使用ResponseBody，  -->
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
             </bean>

@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/get")
     @ResponseBody
     public String get(){
-        return "GET14443!!";
+        return "GET!!";
     }
     @PostMapping("/post")
     @ResponseBody
