@@ -12,6 +12,9 @@
         <module>demo</module>
         <module>demo-annotations</module>
         <module>mymvc</module>
+        <module>demo-databind</module>
+        <module>demo-typeconverter</module>
+        <module>demo-modelandview</module>
     </modules>
 
 
