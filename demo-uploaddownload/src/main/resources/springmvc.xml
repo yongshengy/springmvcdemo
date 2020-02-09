@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <context:component-scan base-package="local.test.springmvc.typeconverter"/>
+    <context:component-scan base-package="local.test.springmvc.uploaddownload"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/"/>
@@ -14,17 +14,7 @@ http://www.springframework.org/schema/mvc https://www.springframework.org/schema
     </bean>
 
 
-    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-        <property name="converters">
-            <list>
-                <bean class="local.test.springmvc.typeconverter.DateConverter">
-                    <constructor-arg name="pattern" value="yyyy-MM-dd"/>
-                </bean>
-                <bean class="local.test.springmvc.typeconverter.UserInfoConverter"/>
-            </list>
-        </property>
-    </bean>
-    <mvc:annotation-driven conversion-service="conversionService">
+    <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes" value="text/html;charSet=UTF-8"/>
@@ -35,4 +25,18 @@ http://www.springframework.org/schema/mvc https://www.springframework.org/schema
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!-- 配置 CommonsMultipartResolver bean，id 必须是 multipartResolver -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 处理文件名中文乱码 -->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!-- 设置多文件上传，总大小上限，不设置默认没有限制，单位为字节，1M=1*1024*1024 -->
+        <property name="maxUploadSize" value="1048576"/>
+        <!-- 设置每个上传文件的大小上限 -->
+        <property name="maxUploadSizePerFile" value="1048576"/>
+    </bean>
+
+    <!-- 设置异常解析器 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView" value="/error.jsp"/>
+    </bean>
 </beans>

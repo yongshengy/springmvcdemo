@@ -15,6 +15,11 @@
         <module>demo-databind</module>
         <module>demo-typeconverter</module>
         <module>demo-modelandview</module>
+        <module>demo-restful</module>
+        <module>demo-uploaddownload</module>
+        <module>demo-validator</module>
+        <module>demo-tags</module>
+        <module>demo-i18n</module>
     </modules>
 
 

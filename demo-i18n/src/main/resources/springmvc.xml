@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <context:component-scan base-package="local.test.springmvc.typeconverter"/>
+    <context:component-scan base-package="local.test.springmvc.i18n"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/"/>
@@ -14,17 +14,8 @@ http://www.springframework.org/schema/mvc https://www.springframework.org/schema
     </bean>
 
 
-    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-        <property name="converters">
-            <list>
-                <bean class="local.test.springmvc.typeconverter.DateConverter">
-                    <constructor-arg name="pattern" value="yyyy-MM-dd"/>
-                </bean>
-                <bean class="local.test.springmvc.typeconverter.UserInfoConverter"/>
-            </list>
-        </property>
-    </bean>
-    <mvc:annotation-driven conversion-service="conversionService">
+
+    <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes" value="text/html;charSet=UTF-8"/>
@@ -35,4 +26,27 @@ http://www.springframework.org/schema/mvc https://www.springframework.org/schema
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--validation in spring mvc-->
+<!--    <mvc:annotation-driven validator="userValidator"/>-->
+<!--    <bean id="userValidator" class="local.test.springmvc.validator.UserValidator"/>-->
+
+<!--    JSR-303 配置-->
+    <mvc:annotation-driven/>
+
+    <!-- 国际化资源文件 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <!-- 表示多语言配置文件在根路径下，以 language 开头的文件-->
+        <property name="basename" value="classpath:language"/>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+    </bean>
+
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang"/>
+        </bean>
+    </mvc:interceptors>
+
+    <!-- 配置 SessionLocaleResolver，动态的获取 Locale 对象存入 Session -->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"></bean>
 </beans>

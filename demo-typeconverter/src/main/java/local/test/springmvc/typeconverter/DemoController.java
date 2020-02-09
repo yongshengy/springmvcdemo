@@ -16,5 +16,11 @@ public class DemoController {
     public String index(Date date) {
         return date.toString();
     }
+    //http://localhost:8080/demo_typeconverter_war_exploded/demo/convertUser?user=1-yy-12
     // 或者是string和对象的转换 id-name-age -> User
+    @RequestMapping("/convertUser")
+    @ResponseBody
+    public String userConvertTest(User user) {
+        return user.toString();
+    }
 }
